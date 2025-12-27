@@ -2,48 +2,54 @@
 
 import { test, expect } from '@playwright/test';
 
+// Расширяем тип Window для поддержки testdata
+declare global {
+  interface Window {
+    testdata?: Array<{ timestamp: number; path: string }>;
+  }
+}
+
 test.describe('Next.js 05: Dashboard Nested Layout', () => {
   test('should minimize DashboardNav re-renders when using layout', async ({ page }) => {
-    const consoleMessages: string[] = [];
-    
-    // Собираем консольные сообщения от DashboardNav
-    page.on('console', msg => {
-      if (msg.text().includes('DashboardNav rendered')) {
-        consoleMessages.push(msg.text());
-      }
+    // Очищаем testdata перед началом теста
+    await page.addInitScript(() => {
+      window.testdata = [];
     });
     
     // Переходим на первую страницу
     await page.goto('http://localhost:3000/nextjs/nextjs05');
-    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
     
-    // Переходим на вторую страницу (Settings)
-    await page.goto('http://localhost:3000/nextjs/nextjs05/settings');
-    await page.waitForLoadState('networkidle');
+    // Переходим на вторую страницу (Settings) через навигацию
+    await page.click('a[href="/nextjs/nextjs05/settings"]');
+    await page.waitForTimeout(1000);
     
-    // Переходим на третью страницу (Profile)
-    await page.goto('http://localhost:3000/nextjs/nextjs05/profile');
-    await page.waitForLoadState('networkidle');
+    // Переходим на третью страницу (Profile) через навигацию
+    await page.click('a[href="/nextjs/nextjs05/profile"]');
+    await page.waitForTimeout(1000);
     
     // Возвращаемся на первую страницу для дополнительного рендера
-    await page.goto('http://localhost:3000/nextjs/nextjs05');
-    await page.waitForLoadState('networkidle');
+    await page.click('a[href="/nextjs/nextjs05"]');
+    await page.waitForTimeout(1000);
     
-    // Снова переходим на Settings
-    await page.goto('http://localhost:3000/nextjs/nextjs05/settings');
-    await page.waitForLoadState('networkidle');
+    // Снова переходим на Settings через навигацию
+    await page.click('a[href="/nextjs/nextjs05/settings"]');
+    await page.waitForTimeout(1000);
     
-    // Снова переходим на Profile
-    await page.goto('http://localhost:3000/nextjs/nextjs05/profile');
-    await page.waitForLoadState('networkidle');
+    // Снова переходим на Profile через навигацию
+    await page.click('a[href="/nextjs/nextjs05/profile"]');
+    await page.waitForTimeout(1000);
     
-    // Подсчитываем количество рендеров DashboardNav
-    const totalRenders = consoleMessages.length;
-    
+    // Получаем данные о рендерах после пятого перехода
+    const testData = await page.evaluate(() => {
+      return window.testdata ?? [];
+    });
+
     // Проверяем результат:
-    // При правильном решении (DashboardNav в layout) должно быть ≤ 6 рендеров
-    // При неправильном решении (DashboardNav в page) будет ≥ 7 рендеров
-    expect(totalRenders).toBeLessThanOrEqual(6);
+    // При правильном решении (DashboardNav в layout) должно быть ≤ 2 рендеров
+    // При неправильном решении (DashboardNav в page) будет ≥ 12 рендеров
+    console.log('Total renders:', testData.length);
+    expect(testData.length).toBeLessThanOrEqual(2);
     
     // Проверяем, что все страницы загружаются корректно
     await expect(page.locator('h1')).toContainText('Dashboard');

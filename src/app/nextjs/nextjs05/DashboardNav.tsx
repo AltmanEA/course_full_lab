@@ -1,13 +1,17 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function DashboardNav() {
-  // Используем usePathname для определения текущего пути
-  const currentPath = usePathname();
-  
-  // Логируем каждый рендер компонента для отслеживания
-  console.log(`DashboardNav rendered on path: ${currentPath}`);
+  // Записываем данные о рендере в глобальный объект
+  if (typeof window !== 'undefined') {
+    window.testdata ??= [];
+    // Добавляем запись о каждом рендере
+    window.testdata.push({
+      timestamp: Date.now(),
+      path: window.location.pathname
+    });
+  }
   
   return (
     <nav className="bg-white shadow-sm border-b">
@@ -17,33 +21,24 @@ export default function DashboardNav() {
             <h1 className="text-xl font-semibold">Dashboard</h1>
           </div>
           <div className="flex space-x-8">
-            <a 
-              href="/nextjs/nextjs05" 
-              className={currentPath === '/nextjs/nextjs05' 
-                ? "text-blue-600 border-b-2 border-blue-600 px-3 py-2 text-sm font-medium"
-                : "text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
-              }
+            <Link
+              href="/nextjs/nextjs05"
+              className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
             >
               Home
-            </a>
-            <a 
-              href="/nextjs/nextjs05/settings" 
-              className={currentPath === '/nextjs/nextjs05/settings'
-                ? "text-blue-600 border-b-2 border-blue-600 px-3 py-2 text-sm font-medium"
-                : "text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
-              }
+            </Link>
+            <Link
+              href="/nextjs/nextjs05/settings"
+              className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
             >
               Settings
-            </a>
-            <a 
-              href="/nextjs/nextjs05/profile" 
-              className={currentPath === '/nextjs/nextjs05/profile'
-                ? "text-blue-600 border-b-2 border-blue-600 px-3 py-2 text-sm font-medium"
-                : "text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
-              }
+            </Link>
+            <Link
+              href="/nextjs/nextjs05/profile"
+              className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
             >
               Profile
-            </a>
+            </Link>
           </div>
         </div>
       </div>
