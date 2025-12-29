@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "Dashboard" [level=1] [ref=e5]
+        - paragraph [ref=e6]: Overview of your business metrics
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: Total Revenue
+          - paragraph [ref=e10]: $112 000
+        - generic [ref=e11]:
+          - paragraph [ref=e12]: Total Customers
+          - paragraph [ref=e13]: 1 245
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Pending Orders
+          - paragraph [ref=e16]: "32"
+      - generic [ref=e17]:
+        - heading "Revenue Chart" [level=2] [ref=e18]
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - paragraph [ref=e22]: Jan
+            - paragraph [ref=e23]: $12 500
+          - generic [ref=e24]:
+            - paragraph [ref=e26]: Feb
+            - paragraph [ref=e27]: $15 000
+          - generic [ref=e28]:
+            - paragraph [ref=e30]: Mar
+            - paragraph [ref=e31]: $18 000
+          - generic [ref=e32]:
+            - paragraph [ref=e34]: Apr
+            - paragraph [ref=e35]: $22 000
+          - generic [ref=e36]:
+            - paragraph [ref=e38]: May
+            - paragraph [ref=e39]: $19 500
+          - generic [ref=e40]:
+            - paragraph [ref=e42]: Jun
+            - paragraph [ref=e43]: $25 000
+  - button "Open Next.js Dev Tools" [ref=e49] [cursor=pointer]:
+    - img [ref=e50]
+  - alert [ref=e53]
+```
