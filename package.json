@@ -17,7 +17,7 @@
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
     "start": "next start",
-    "test": "vitest",
+    "test": "playwright test",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:e2e": "playwright test",
