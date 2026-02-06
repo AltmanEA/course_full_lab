@@ -1,0 +1,25 @@
+{
+    "path": "src/app",
+    "blocks": [
+        {
+            "name": "nextjs",
+            "task": 28,
+            "templates": {
+                "source": "{task}/page.tsx",
+                "test": "{task}/{task}.spec.ts",
+                "task": "{task}/README.md"
+            }
+        }
+    ],
+    "tests": [
+        {
+            "time": 1800,
+            "blocks": [
+                {
+                    "block": "nextjs",
+                    "task": 4
+                }
+            ]
+        }
+    ]
+}
