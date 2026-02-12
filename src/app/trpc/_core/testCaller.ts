@@ -1,9 +1,10 @@
-import type { AnyRouter } from "@trpc/server";
-import type { Context } from "./context";
+import type { Context } from './context'
 
-export function createTestCaller<TRouter extends AnyRouter>(
-  appRouter: TRouter,
+export const createTestCaller = <TRouter>(
+  router: TRouter & {
+    createCaller: (ctx: Context) => any
+  },
   ctx: Context
-) {
-  return appRouter.createCaller(ctx);
+) => {
+  return router.createCaller(ctx)
 }

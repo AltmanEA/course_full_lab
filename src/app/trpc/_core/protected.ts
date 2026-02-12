@@ -1,9 +1,22 @@
-import { TRPCError } from "@trpc/server";
-import { t } from "./trpc";
+import { TRPCError } from '@trpc/server'
+import { publicProcedure } from './trpc'
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
   if (!ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    })
   }
-  return next();
-});
+
+  return next()
+})
+
+export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+  if (ctx.user?.role !== 'ADMIN') {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    })
+  }
+
+  return next()
+})

@@ -22,7 +22,7 @@
         },
         {
             "name": "trpc",
-            "task": 20,
+            "task": 40,
             "templates": {
                 "source": "{task}/router.ts",
                 "test": "{task}/{task}.test.ts",

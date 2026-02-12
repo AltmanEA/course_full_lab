@@ -1,24 +1,43 @@
-export interface DataAccess {
-  getVersion(): string;
-  createUser(name: string): string;
-  getUserById(id: string): { id: string; name: string } | null;
-  updateUser(id: string, name: string): boolean;
-  deleteUser(id: string): boolean;
+import { randomUUID } from 'crypto'
 
-  createPost(title: string): string;
-  getPostById(id: string): { id: string; title: string } | null;
+export interface DataAccess {
+  // существующие методы остаются без изменений
+  [key: string]: unknown
 }
 
-export type Context = {
-  requestId?: string;
-  user?: { id: string } | null;
-  dataAccess?: DataAccess;
-};
+export interface Context {
+  dataAccess: DataAccess
 
-export function createContext(partial?: Partial<Context>): Context {
+  // Infrastructure (optional, production-ready extensions)
+  requestId?: string
+
+  logger?: {
+    info(message: string): void
+    error(message: string): void
+  }
+
+  auditService?: {
+    record(event: unknown): void
+  }
+
+  user?: {
+    id: string
+    role: 'USER' | 'ADMIN'
+  }
+}
+
+export const createContext = (params: {
+  dataAccess: DataAccess
+  requestId?: string
+  logger?: Context['logger']
+  auditService?: Context['auditService']
+  user?: Context['user']
+}): Context => {
   return {
-    requestId: partial?.requestId,
-    user: partial?.user ?? null,
-    dataAccess: partial?.dataAccess,
-  };
+    dataAccess: params.dataAccess,
+    requestId: params.requestId,
+    logger: params.logger,
+    auditService: params.auditService,
+    user: params.user,
+  }
 }
