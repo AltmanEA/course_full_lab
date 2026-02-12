@@ -13,9 +13,18 @@
         },
         {
             "name": "drizzle",
-            "task": 28,
+            "task": 35,
             "templates": {
                 "source": "{task}/schema.ts",
+                "test": "{task}/{task}.test.ts",
+                "task": "{task}/README.md"
+            }
+        },
+        {
+            "name": "trpc",
+            "task": 20,
+            "templates": {
+                "source": "{task}/router.ts",
                 "test": "{task}/{task}.test.ts",
                 "task": "{task}/README.md"
             }
@@ -27,7 +36,7 @@
             "blocks": [
                 {
                     "block": "nextjs",
-                    "task": 5
+                    "task": 4
                 }
             ]
         },
@@ -40,7 +49,20 @@
                 },
                 {
                     "block": "drizzle",
-                    "task": 3
+                    "task": 2
+                }
+            ]
+        },
+        {
+            "time": 1800,
+            "blocks": [
+                {
+                    "block": "nextjs drizzle",
+                    "task": 2
+                },
+                {
+                    "block": "trpc",
+                    "task": 2
                 }
             ]
         }
