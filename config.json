@@ -37,6 +37,15 @@
                 "test": "{task}/{task}.spec.ts",
                 "task": "{task}/README.md"
             }
+        },
+        {
+            "name": "bauth",
+            "task": 40,
+            "templates": {
+                "source": "{task}/{task}.ts",
+                "test": "{task}/{task}.spec.ts",
+                "task": "{task}/README.md"
+            }
         }
     ],
     "tests": [
