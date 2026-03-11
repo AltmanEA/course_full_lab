@@ -46,6 +46,7 @@
     "tests": [
         {
             "time": 1800,
+            "title": "Next.js",
             "blocks": [
                 {
                     "block": "nextjs",
@@ -55,6 +56,7 @@
         },
         {
             "time": 1800,
+            "title": "Drizzle ORM",
             "blocks": [
                 {
                     "block": "nextjs",
@@ -68,6 +70,7 @@
         },
         {
             "time": 1800,
+            "title": "TRPC",
             "blocks": [
                 {
                     "block": "nextjs drizzle",
@@ -81,6 +84,7 @@
         },
         {
             "time": 1800,
+            "title": "Better auth",
             "blocks": [
                 {
                     "block": "nextjs drizzle trpc",
@@ -89,6 +93,16 @@
                 {
                     "block": "bauth",
                     "task": 2
+                }
+            ]
+        },
+        {
+            "time": 1800,
+            "title": "Сдача экстерном",
+            "blocks": [
+                {
+                    "block": "nextjs drizzle trpc bauth",
+                    "task": 4
                 }
             ]
         }
