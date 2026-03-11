@@ -28,7 +28,7 @@
             "task": 40,
             "templates": {
                 "source": "{task}/router.ts",
-                "test": "{task}/{task}.spec.ts",
+                "test": "{task}/{task}.test.ts",
                 "task": "{task}/README.md"
             }
         },
@@ -38,7 +38,7 @@
             "task": 40,
             "templates": {
                 "source": "{task}/{task}.ts",
-                "test": "{task}/{task}.spec.ts",
+                "test": "{task}/{task}.test.ts",
                 "task": "{task}/README.md"
             }
         }
