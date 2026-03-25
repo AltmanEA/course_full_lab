@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 01: Optimizing Images', () => {
   test('should have optimized image using next/image', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs01');
+    await page.goto('/nextjs/nextjs01');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -32,7 +32,7 @@ test.describe('Next.js 01: Optimizing Images', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs01');
+    await page.goto('/nextjs/nextjs01');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];

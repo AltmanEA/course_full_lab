@@ -1,0 +1,23 @@
+# Используем официальный образ Node.js на Alpine
+FROM node:20-alpine AS base
+
+# Устанавливаем системные зависимости: git и docker-cli
+RUN apk add --no-cache git docker-cli
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем файлы зависимостей
+COPY package.json package-lock.json ./
+
+# Устанавливаем зависимости (включая devDependencies)
+RUN npm ci
+
+# Копируем весь исходный код
+COPY . .
+
+# Открываем порт, который будет использоваться приложением
+EXPOSE 3000
+
+# Команда по умолчанию — запуск dev-сервера
+CMD ["npm", "run", "dev"]

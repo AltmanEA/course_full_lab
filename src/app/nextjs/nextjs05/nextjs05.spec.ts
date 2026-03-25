@@ -17,7 +17,7 @@ test.describe('Next.js 05: Dashboard Nested Layout', () => {
     });
     
     // Переходим на первую страницу
-    await page.goto('http://localhost:3000/nextjs/nextjs05');
+    await page.goto('/nextjs/nextjs05');
     await page.waitForTimeout(1000);
     
     // Переходим на вторую страницу (Settings) через навигацию
@@ -59,9 +59,9 @@ test.describe('Next.js 05: Dashboard Nested Layout', () => {
 
   test('should have navigation working correctly across all pages', async ({ page }) => {
     const pages = [
-      { url: 'http://localhost:3000/nextjs/nextjs05', expectedTitle: 'Dashboard Home' },
-      { url: 'http://localhost:3000/nextjs/nextjs05/settings', expectedTitle: 'Dashboard Settings' },
-      { url: 'http://localhost:3000/nextjs/nextjs05/profile', expectedTitle: 'Dashboard Profile' }
+      { url: '/nextjs/nextjs05', expectedTitle: 'Dashboard Home' },
+      { url: '/nextjs/nextjs05/settings', expectedTitle: 'Dashboard Settings' },
+      { url: '/nextjs/nextjs05/profile', expectedTitle: 'Dashboard Profile' }
     ];
     
     for (const pageData of pages) {
@@ -82,9 +82,9 @@ test.describe('Next.js 05: Dashboard Nested Layout', () => {
       
   test('should load all pages without console errors', async ({ page }) => {
     const pages = [
-      'http://localhost:3000/nextjs/nextjs05',
-      'http://localhost:3000/nextjs/nextjs05/settings',
-      'http://localhost:3000/nextjs/nextjs05/profile'
+      '/nextjs/nextjs05',
+      '/nextjs/nextjs05/settings',
+      '/nextjs/nextjs05/profile'
     ];
     
     for (const url of pages) {

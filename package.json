@@ -25,6 +25,7 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:install": "playwright install",
+    "test:e2e:docker": "node scripts/run-playwright.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -51,7 +52,7 @@
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "drizzle-kit": "^0.30.5",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "eslint-plugin-drizzle": "^0.2.3",
@@ -65,5 +66,5 @@
   "ct3aMetadata": {
     "initVersion": "7.40.0"
   },
-  "packageManager": "pnpm@10.22.0"
+  "packageManager": "npm@10.9.0"
 }

@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 04: Creating Route Segments', () => {
   test('should be accessible at demo route', async ({ page }) => {
     // Переходим на страницу по правильному пути
-    await page.goto('http://localhost:3000/nextjs/nextjs04/demo');
+    await page.goto('/nextjs/nextjs04/demo');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -27,7 +27,7 @@ test.describe('Next.js 04: Creating Route Segments', () => {
 
   test('should show different content at root route', async ({ page }) => {
     // Проверяем, что в корне nextjs04 контент отличается
-    await page.goto('http://localhost:3000/nextjs/nextjs04');
+    await page.goto('/nextjs/nextjs04');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -41,7 +41,7 @@ test.describe('Next.js 04: Creating Route Segments', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи по правильному пути
-    await page.goto('http://localhost:3000/nextjs/nextjs04/demo');
+    await page.goto('/nextjs/nextjs04/demo');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];

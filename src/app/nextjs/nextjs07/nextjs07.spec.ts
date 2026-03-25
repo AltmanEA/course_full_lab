@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 07: Active Link Navigation', () => {
   test('should highlight the active link in navigation', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs07');
+    await page.goto('/nextjs/nextjs07');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -36,7 +36,7 @@ test.describe('Next.js 07: Active Link Navigation', () => {
 
   test('should apply active styling to current page link', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs07');
+    await page.goto('/nextjs/nextjs07');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -59,7 +59,7 @@ test.describe('Next.js 07: Active Link Navigation', () => {
 
   test('should navigate to different pages and highlight active link correctly', async ({ page }) => {
     // Переходим на страницу Page 1 напрямую
-    await page.goto('http://localhost:3000/nextjs/nextjs07/page1');
+    await page.goto('/nextjs/nextjs07/page1');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -82,7 +82,7 @@ test.describe('Next.js 07: Active Link Navigation', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs07');
+    await page.goto('/nextjs/nextjs07');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];

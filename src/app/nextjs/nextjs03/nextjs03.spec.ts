@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 03: Lazy Loading Images', () => {
   test('should have lazy loading on images', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs03');
+    await page.goto('/nextjs/nextjs03');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -37,7 +37,7 @@ test.describe('Next.js 03: Lazy Loading Images', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs03');
+    await page.goto('/nextjs/nextjs03');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];
@@ -70,7 +70,7 @@ test.describe('Next.js 03: Lazy Loading Images', () => {
 
   test('should have proper image optimization attributes', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs03');
+    await page.goto('/nextjs/nextjs03');
     
     await page.waitForLoadState('networkidle');
     

@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 02: Optimizing Fonts and Images', () => {
   test('should use optimized fonts and images', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs02');
+    await page.goto('/nextjs/nextjs02');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -35,7 +35,7 @@ test.describe('Next.js 02: Optimizing Fonts and Images', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs02');
+    await page.goto('/nextjs/nextjs02');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];
@@ -68,7 +68,7 @@ test.describe('Next.js 02: Optimizing Fonts and Images', () => {
 
   test('should have proper font loading and display', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs02');
+    await page.goto('/nextjs/nextjs02');
     
     await page.waitForLoadState('networkidle');
     

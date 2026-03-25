@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 08: Programmatic Navigation with useRouter', () => {
   test('should navigate to success page after form submission', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs08');
+    await page.goto('/nextjs/nextjs08');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -30,7 +30,7 @@ test.describe('Next.js 08: Programmatic Navigation with useRouter', () => {
   });
 
   test('should have form with email input and submit button', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs08');
+    await page.goto('/nextjs/nextjs08');
     await page.waitForLoadState('networkidle');
     
     // Проверяем наличие формы
@@ -47,7 +47,7 @@ test.describe('Next.js 08: Programmatic Navigation with useRouter', () => {
   });
 
   test('should navigate to success page when email is submitted', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs08');
+    await page.goto('/nextjs/nextjs08');
     await page.waitForLoadState('networkidle');
     
     // Заполняем форму
@@ -72,7 +72,7 @@ test.describe('Next.js 08: Programmatic Navigation with useRouter', () => {
       }
     });
     
-    await page.goto('http://localhost:3000/nextjs/nextjs08');
+    await page.goto('/nextjs/nextjs08');
     await page.waitForLoadState('networkidle');
     
     // Проверяем, что нет критических ошибок

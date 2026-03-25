@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Next.js 06: Basic Navigation with Link Component', () => {
   test('should use Link component for navigation instead of standard anchor tags', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs06');
+    await page.goto('/nextjs/nextjs06');
     
     // Ждем загрузки страницы
     await page.waitForLoadState('networkidle');
@@ -47,7 +47,7 @@ test.describe('Next.js 06: Basic Navigation with Link Component', () => {
     });
     
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs06');
+    await page.goto('/nextjs/nextjs06');
     
     // Сбрасываем счетчик перед навигацией
     pageLoadCount = 0;
@@ -69,7 +69,7 @@ test.describe('Next.js 06: Basic Navigation with Link Component', () => {
 
   test('should load page without errors and show task content', async ({ page }) => {
     // Переходим на страницу задачи
-    await page.goto('http://localhost:3000/nextjs/nextjs06');
+    await page.goto('/nextjs/nextjs06');
     
     // Проверяем, что страница загружается без ошибок в консоли
     const consoleMessages: string[] = [];

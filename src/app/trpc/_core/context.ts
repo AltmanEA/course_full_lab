@@ -27,7 +27,7 @@ export interface Context {
 }
 
 export const createContext = (params: {
-  dataAccess: DataAccess
+  dataAccess?: DataAccess
   requestId?: string
   logger?: Context['logger']
   auditService?: Context['auditService']

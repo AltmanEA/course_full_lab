@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Next.js 09: Async Data Fetching", () => {
   test("should display real user names from data.ts", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Проверяем, что отображаются реальные имена из data.ts
@@ -12,7 +12,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
   });
 
   test("should display user names in correct order", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Проверяем порядок элементов
@@ -30,7 +30,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
       }
     });
 
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Фильтруем только критические ошибки
@@ -44,7 +44,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
   });
 
   test("should contain expected page structure", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Проверяем заголовки
@@ -58,7 +58,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
 
   test("should fetch data in parallel (performance test)", async ({ page }) => {
     // Warmup — делаем холодный старт до измерения
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Threshold: 1200ms (accounts for rendering overhead)
@@ -68,7 +68,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
 
     const startTime = Date.now();
 
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     const loadTime = Date.now() - startTime;
@@ -81,7 +81,7 @@ test.describe("Next.js 09: Async Data Fetching", () => {
   });
 
   test("should display both users and tasks lists", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs09");
+    await page.goto("/nextjs/nextjs09");
     await page.waitForLoadState("networkidle");
 
     // Check users are displayed
