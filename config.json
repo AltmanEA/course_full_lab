@@ -5,7 +5,7 @@
             "name": "nextjs",
             "title": "Next.js",
             "task": 28,
-            "testCommand": "npm run test:e2e",
+            "testCommand": "docker exec course_full_lab_playwright_1 npx playwright test",
             "templates": {
                 "source": "{task}/page.tsx",
                 "test": "{task}/{task}.spec.ts",

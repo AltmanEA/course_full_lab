@@ -34,8 +34,10 @@ services:
       NODE_ENV: development
       DATABASE_URL: "postgresql://postgres:password@postgres:5432/course_full_lab"
       CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "1000"
       WATCHPACK_POLLING: "true"
       NEXT_WEBPACK_USEPOLLING: "1"
+      TURBO: "0"
       # Другие переменные из .env можно добавить через env_file
     env_file:
       - .env
@@ -44,7 +46,7 @@ services:
         condition: service_healthy
     networks:
       - lab_network
-    command: npm run dev
+    command: npx next dev
     restart: unless-stopped
 
   playwright:
