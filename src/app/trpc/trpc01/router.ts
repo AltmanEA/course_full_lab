@@ -1,5 +1,5 @@
 import { router } from "../_core/trpc";
 
-export const appRouter = router({});
-
-export type AppRouter = typeof appRouter;
+// TODO:
+// 1. Создайте пустой appRouter
+// 2. Экспортируйте тип AppRouter

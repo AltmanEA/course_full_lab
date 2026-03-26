@@ -4,7 +4,7 @@ import { createContext } from "../_core/context";
 
 describe("trpc05 - input validation", () => {
   it("should return formatted message for valid input", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.greet({ name: "John" });
@@ -13,7 +13,7 @@ describe("trpc05 - input validation", () => {
   });
 
   it("should throw error for empty name", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     await expect(

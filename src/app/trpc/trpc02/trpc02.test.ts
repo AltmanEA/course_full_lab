@@ -9,7 +9,7 @@ describe("trpc02 - first query procedure", () => {
   });
 
   it("should return 'hello'", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.hello();

@@ -14,7 +14,7 @@ describe("trpc19 - router composition", () => {
   });
 
   it("should allow creating caller", () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
     expect(caller).toBeDefined();
   });

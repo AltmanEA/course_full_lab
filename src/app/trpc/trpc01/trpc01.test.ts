@@ -14,7 +14,7 @@ describe("trpc01 - minimal router", () => {
   });
 
   it("should allow creating a caller", () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     expect(caller).toBeDefined();

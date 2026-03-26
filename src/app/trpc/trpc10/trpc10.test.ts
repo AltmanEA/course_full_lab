@@ -4,7 +4,7 @@ import { createContext } from "../_core/context";
 
 describe("trpc10 - router composition", () => {
   it("should allow system.ping without auth", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.system.ping();

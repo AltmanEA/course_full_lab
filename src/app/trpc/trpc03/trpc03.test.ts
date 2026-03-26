@@ -4,7 +4,7 @@ import { createContext } from "../_core/context";
 
 describe("trpc03 - return object from query", () => {
   it("should return an object", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.hello();
@@ -14,7 +14,7 @@ describe("trpc03 - return object from query", () => {
   });
 
   it("should contain message field", async () => {
-    const ctx = createContext();
+    const ctx = createContext({});
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.hello();
