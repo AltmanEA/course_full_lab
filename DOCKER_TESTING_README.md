@@ -32,7 +32,6 @@
 - `Dockerfile.playwright` — сборка контейнера с Playwright
 - `docker-compose.yml` — конфигурация сервисов, сетей и томов
 - `.devcontainer/devcontainer.json` — конфигурация Dev Container для VSCode
-- `scripts/run-playwright.js` — Node.js скрипт для удобного запуска тестов через `docker exec`
 - `scripts/save-images.ps1` и `scripts/load-images.ps1` — PowerShell скрипты для переноса образов между компьютерами
 
 ## Настройка
@@ -57,23 +56,17 @@
 
 ## Запуск тестов
 
-### Через npm-скрипт
-В `package.json` добавлен скрипт:
-```json
-"test:e2e:docker": "node scripts/run-playwright.js"
+### Прямой вызов через docker exec
+```bash
+docker exec course_full_lab_playwright_1 npx playwright test [путь_к_тесту] [опции]
 ```
-Он запускает тесты в контейнере `playwright` с передачей всех аргументов командной строки.
 
 Примеры:
 ```bash
-npm run test:e2e:docker -- --grep "nextjs01"
-npm run test:e2e:docker -- --ui
-npm run test:e2e:docker -- --headed
-```
-
-### Прямой вызов через docker exec
-```bash
 docker exec course_full_lab_playwright_1 npx playwright test src/app/nextjs/nextjs01/nextjs01.spec.ts
+docker exec course_full_lab_playwright_1 npx playwright test --grep "nextjs01"
+docker exec course_full_lab_playwright_1 npx playwright test --ui
+docker exec course_full_lab_playwright_1 npx playwright test --headed
 ```
 
 ### Конфигурация Playwright
@@ -128,6 +121,12 @@ Playwright пытается запустить unit-тесты, которые �
 
 ### Ошибка «invalid IP address in add-host»
 Возникает при некорректном формате `extra_hosts`. Убедитесь, что в `docker-compose.yml` нет ошибочных записей.
+
+### Ошибка «client version 1.52 is too new. Maximum supported API version is 1.41»
+Возникает при несовместимости версии Docker CLI внутри контейнера `lab_next` с Docker демоном на хосте. Решение:
+- В `Dockerfile.lab_next` установлена фиксированная версия Docker CLI 28.0.0, совместимая с Docker Engine 28.4.0.
+- Убедитесь, что образ пересобран (`docker-compose build lab_next`).
+- Если ошибка сохраняется, проверьте версию Docker Engine на хосте и при необходимости обновите её.
 
 ### Контейнеры не запускаются из-за конфликта портов
 Убедитесь, что порты 3000 и 5432 свободны. Измените маппинг портов в `docker-compose.yml` при необходимости.

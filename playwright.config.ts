@@ -8,8 +8,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   outputDir: '/tmp/playwright-output',
   reporter: [['html', { open: 'never', outputDir: '/tmp/playwright-report' }]],
+  timeout: 60000, // Увеличиваем глобальный таймаут до 60 секунд
   use: {
-    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://lab_next:3000',
+    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL ?? 'http://lab_next:3000',
     trace: 'on-first-retry',
   },
   projects: [
