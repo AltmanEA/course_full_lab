@@ -1,0 +1,45 @@
+# Игнорируем node_modules (они будут установлены внутри контейнера)
+node_modules
+npm-debug.log
+
+# Игнорируем папки с резервными копиями и артефактами
+backup
+dist
+build
+.next
+out
+
+# Игнорируем системные и временные файлы
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Игнорируем логи и кэш
+*.log
+.cache
+
+# Игнорируем конфигурации IDE
+.vscode
+.idea
+
+# Игнорируем тестовые результаты и покрытие
+coverage
+test-results
+playwright-report
+
+# Игнорируем Docker-архивы
+*.tar
+*.tar.gz
+
+# Игнорируем файлы окружения (кроме .env.example)
+.env*
+!.env.example
+
+# Игнорируем большие бинарные файлы
+public/images/*.webp
+!public/images/nextjs01.webp
+
+# Игнорируем документацию (опционально)
+doc/*.md
+!doc/README.md
