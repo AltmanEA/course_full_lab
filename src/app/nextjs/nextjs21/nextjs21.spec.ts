@@ -3,8 +3,6 @@ import { test, expect } from "@playwright/test";
 test.describe.configure({ mode: "serial" });
 
 test.describe("nextjs21 - Обновление инвойса с использованием динамического маршрута", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("должен обновить инвойс и перенаправить на страницу списка", async ({
     page,
   }) => {

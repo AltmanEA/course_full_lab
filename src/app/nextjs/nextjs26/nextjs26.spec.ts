@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("nextjs26 - Semantic HTML и Labelling в формах", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("форма создания инвойса должна использовать семантические элементы и правильное связывание label с полями", async ({
     page,
   }) => {

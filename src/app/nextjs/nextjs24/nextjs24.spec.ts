@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("nextjs24 - Error Boundary для границы ошибок", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("должен показать fallback UI с кнопкой Попробовать снова при ошибке", async ({
     page,
   }) => {

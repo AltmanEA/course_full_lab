@@ -1,11 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('nextjs23 - Server Action Error Handling', () => {
-  const baseURL = 'http://localhost:3000';
-
   test('полный тест: ошибка при маленькой сумме, успешное создание при большой', async ({ page }) => {
     // ШАГ 1: Проверяем ошибку при создании инвойса с недопустимой суммой
-    await page.goto(`${baseURL}/nextjs/nextjs23`);
+    await page.goto("/nextjs/nextjs23");
     await expect(page.locator('h1')).toContainText('Создать инвойс');
 
     // Заполняем форму с суммой менее 1000 (чтобы вызвать ошибку)
@@ -34,7 +32,7 @@ test.describe('nextjs23 - Server Action Error Handling', () => {
     await page.click('button[type="submit"]');
 
     // Ожидаем перенаправления на страницу списка
-    await expect(page).toHaveURL(`${baseURL}/nextjs/nextjs23/invoices`);
+    await expect(page).toHaveURL(/\/nextjs\/nextjs23\/invoices$/);
     await expect(page.locator('h1')).toContainText('Список инвойсов');
 
     // Проверяем, что новый инвойс (id=2) появился в списке

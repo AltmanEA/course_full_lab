@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("nextjs25 - notFound() и not-found.tsx", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("должен отображать страницу редактирования для существующего инвойса", async ({
     page,
   }) => {

@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("nextjs27 - Серверная валидация с useActionState", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("отправка пустой формы должна отображать ошибки валидации для всех полей", async ({
     page,
   }) => {

@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("nextjs22 - Удаление инвойса через Server Action", () => {
-  test.use({ baseURL: "http://localhost:3000" });
-
   test("должен удалить инвойс и обновить таблицу без перезагрузки страницы", async ({
     page,
   }) => {
