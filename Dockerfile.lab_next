@@ -27,18 +27,8 @@ RUN npm install && npm install -g vitest
 # Копируем весь исходный код
 COPY . .
 
-# Создаём резервную копию исходного кода в /app_backup
-RUN mkdir -p /app_backup && cp -r . /app_backup
-
-# Копируем entrypoint скрипт
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
 # Открываем порт, который будет использоваться приложением
 EXPOSE 3000
-
-# Устанавливаем entrypoint
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # Команда по умолчанию — запуск dev-сервера
 CMD ["npm", "run", "dev"]
