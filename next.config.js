@@ -14,6 +14,8 @@ const config = {
       },
     ],
   },
+  // Разрешить кросс-оригин запросы от lab_next в development-режиме
+  allowedDevOrigins: process.env.NODE_ENV === 'development' ? ['http://lab_next:3000', 'http://localhost:3000'] : [],
 };
 
 export default config;

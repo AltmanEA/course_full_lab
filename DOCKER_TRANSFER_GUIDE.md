@@ -21,34 +21,24 @@ docker save -o playwright.tar course_full_lab_playwright
 docker save -o postgres.tar postgres:18-alpine
 ```
 
-### Сохраните исходный код
-
-Архив исходного кода содержит все файлы проекта (конфигурации, исходники, тесты), необходимые для работы контейнеров и дальнейшей разработки. Исключены только тяжёлые или временные папки.
-
-```powershell
-tar -czf project_source.tar.gz --exclude=node_modules --exclude=backup --exclude=*.tar .
-```
-
-> **Зачем это нужно:** Docker-образы уже содержат собранное приложение, но исходный код требуется для монтирования тома (`.:/app`), внесения изменений, запуска тестов и работы с конфигурационными файлами.
 
 ### Сохраните тома (рекомендуется)
 
-Тома содержат данные PostgreSQL и зависимости Playwright. Если вы хотите сохранить состояние базы данных и избежать повторной установки зависимостей, выполните:
+Тома содержат данные PostgreSQL, зависимости Playwright и исходный код приложения. Если вы хотите сохранить состояние базы данных, зависимости и исходный код, выполните:
 
 ```powershell
-docker run --rm -v postgres_data:/source -v "${PWD}:/backup" alpine tar czf /backup/postgres_data_backup.tar.gz -C /source .
-docker run --rm -v playwright_node_modules:/source -v "${PWD}:/backup" alpine tar czf /backup/playwright_node_modules_backup.tar.gz -C /source .
+docker run --rm -v postgres_data:/source -v "${PWD}:/backup" postgres:18-alpine tar czf /backup/postgres_data_backup.tar.gz -C /source .
+docker run --rm -v playwright_node_modules:/source -v "${PWD}:/backup" postgres:18-alpine tar czf /backup/playwright_node_modules_backup.tar.gz -C /source .
+docker run --rm -v app_source:/source -v "${PWD}:/backup" postgres:18-alpine tar czf /backup/app_source_backup.tar.gz -C /source .
 ```
 
-> **Примечание:** Том `lab_next_node_modules` больше не используется, так как зависимости Next.js приложения теперь включены в образ `lab_next`.
-
-Если вы готовы начать с пустой базы данных и переустановить зависимости Playwright, этот шаг можно пропустить.
+Если вы готовы начать с пустой базы данных, переустановить зависимости Playwright и скопировать исходный код из образа (при первом запуске том будет автоматически заполнен), этот шаг можно пропустить.
 
 ### Создайте папку backup и переместите архивы
 
 ```powershell
 mkdir -Force backup
-Move-Item lab_next.tar, playwright.tar, postgres.tar, project_source.tar.gz, *_backup.tar.gz -Destination backup -ErrorAction SilentlyContinue
+Move-Item lab_next.tar, playwright.tar, postgres.tar, *_backup.tar.gz -Destination backup -ErrorAction SilentlyContinue
 ```
 
 ## Шаг 2: Перенос файлов на целевой компьютер
@@ -62,7 +52,7 @@ Move-Item lab_next.tar, playwright.tar, postgres.tar, project_source.tar.gz, *_b
 
 ## Шаг 3: Восстановление на целевом компьютере
 
-На целевом компьютере создайте рабочую директорию (например, `d:\courses\course_full_lab`) и поместите туда содержимое проекта (исходный код, если не был распакован), папку `backup` и файлы `docker-compose.yml`, `.env`.
+На целевом компьютере создайте рабочую директорию (например, `d:\courses\course_full_lab`) и поместите туда папку `backup` и файлы `docker-compose.yml`, `.env`.
 
 ### Загрузите Docker-образы
 
@@ -79,14 +69,14 @@ docker load -i backup/postgres.tar   # если файл есть
 ```powershell
 docker volume create postgres_data
 docker volume create playwright_node_modules
+docker volume create app_source
 
-docker run --rm -v postgres_data:/target -v "${PWD}/backup:/backup" alpine tar xzf /backup/postgres_data_backup.tar.gz -C /target
-docker run --rm -v playwright_node_modules:/target -v "${PWD}/backup:/backup" alpine tar xzf /backup/playwright_node_modules_backup.tar.gz -C /target
+docker run --rm -v postgres_data:/target -v "${PWD}/backup:/backup" postgres:18-alpine tar xzf /backup/postgres_data_backup.tar.gz -C /target
+docker run --rm -v playwright_node_modules:/target -v "${PWD}/backup:/backup" postgres:18-alpine tar xzf /backup/playwright_node_modules_backup.tar.gz -C /target
+docker run --rm -v app_source:/target -v "${PWD}/backup:/backup" postgres:18-alpine tar xzf /backup/app_source_backup.tar.gz -C /target
 ```
 
-> **Примечание:** Том `lab_next_node_modules` больше не используется, так как зависимости Next.js приложения теперь включены в образ `lab_next`. Восстанавливать его не нужно.
-
-Если тома не сохранялись, они будут созданы автоматически при запуске контейнеров (база данных будет пустой, зависимости Playwright установятся заново).
+Если тома не сохранялись, они будут созданы автоматически при запуске контейнеров (база данных будет пустой, зависимости Playwright установятся заново, а исходный код будет скопирован из образа `lab_next`).
 
 ### Запустите контейнеры
 
@@ -110,20 +100,25 @@ docker-compose -f docker-compose.transfer.yml up -d
 docker exec course_full_lab_playwright_1 npx playwright test --list
 ```
 
-## Альтернатива: использование скриптов
+### Запуск конкретного теста
 
-Для автоматизации процесса в проекте предусмотрены два скрипта:
-
-- **`scripts/backup-project.ps1`** – выполняет весь шаг 1 (подготовка на исходном компьютере).
-- **`scripts/restore-project.ps1`** – выполняет весь шаг 3 (восстановление на целевом компьютере).
-
-Использование скриптов значительно упрощает процесс и минимизирует ручные операции. Запустите их в PowerShell:
+Если вы хотите запустить конкретный тест, укажите полный путь относительно корня проекта (внутри контейнера это `/app`). Например, для теста `nextjs01`:
 
 ```powershell
-.\scripts\backup-project.ps1
-.\scripts\restore-project.ps1
+docker exec course_full_lab_playwright_1 npx playwright test src/app/nextjs/nextjs01/nextjs01.spec.ts
 ```
+
+**Примечание:** Команда `docker exec course_full_lab_playwright npx playwright test nextjs01/nextjs01.spec` приведёт к ошибке "No tests found", потому что Playwright ищет тесты в директории `src/app` (как указано в `playwright.config.ts`), и путь должен быть либо `src/app/nextjs/nextjs01/nextjs01.spec.ts`, либо `nextjs/nextjs01/nextjs01.spec.ts` (относительно `src/app`).
+
+Чтобы использовать короткий путь `nextjs01/nextjs01.spec`, можно создать симлинк в корне проекта внутри контейнера:
+
+```powershell
+docker exec course_full_lab_playwright_1 ln -sf /app/src/app/nextjs/nextjs01 /app/nextjs01
+```
+
+После этого команда `docker exec course_full_lab_playwright_1 npx playwright test nextjs01/nextjs01.spec` будет работать.
 
 ---
 
-*Последнее обновление: 2026-04-03*
+
+*Последнее обновление: 2026-04-09*

@@ -1,8 +1,8 @@
-# Используем официальный образ Node.js на Alpine
-FROM node:20-alpine AS base
+# Используем официальный образ Node.js на Debian
+FROM node:20 AS base
 
-# Устанавливаем системные зависимости: git, wget, tar
-RUN apk add --no-cache git wget tar
+# Устанавливаем системные зависимости: git, wget, tar (уже могут быть установлены, но для гарантии)
+RUN apt-get update && apt-get install -y git wget tar && rm -rf /var/lib/apt/lists/*
 
 # Настраиваем Git для корректной работы в монтируемом томе (Windows <-> Linux)
 RUN git config --global core.autocrlf input \
@@ -27,8 +27,18 @@ RUN npm install && npm install -g vitest
 # Копируем весь исходный код
 COPY . .
 
+# Создаём резервную копию исходного кода в /app_backup
+RUN mkdir -p /app_backup && cp -r . /app_backup
+
+# Копируем entrypoint скрипт
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Открываем порт, который будет использоваться приложением
 EXPOSE 3000
+
+# Устанавливаем entrypoint
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # Команда по умолчанию — запуск dev-сервера
 CMD ["npm", "run", "dev"]

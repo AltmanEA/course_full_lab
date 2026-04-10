@@ -64,7 +64,7 @@
                 },
                 {
                     "block": "drizzle",
-                    "task": 2
+                    "task": 3
                 }
             ]
         },
@@ -73,12 +73,12 @@
             "title": "TRPC",
             "blocks": [
                 {
-                    "block": "nextjs drizzle",
+                    "block": "nextjs",
                     "task": 2
                 },
                 {
                     "block": "trpc",
-                    "task": 2
+                    "task": 3
                 }
             ]
         },
@@ -87,12 +87,12 @@
             "title": "Better auth",
             "blocks": [
                 {
-                    "block": "nextjs drizzle trpc",
+                    "block": "nextjs",
                     "task": 2
                 },
                 {
                     "block": "bauth",
-                    "task": 2
+                    "task": 3
                 }
             ]
         },
@@ -102,7 +102,7 @@
             "blocks": [
                 {
                     "block": "nextjs drizzle trpc bauth",
-                    "task": 4
+                    "task": 5
                 }
             ]
         }
