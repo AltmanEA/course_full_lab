@@ -24,11 +24,18 @@ COPY package.json package-lock.json ./
 # Устанавливаем зависимости (включая devDependencies)
 RUN npm install && npm install -g vitest
 
-# Копируем весь исходный код
-COPY . .
+# Копируем весь исходный код во временную директорию /app_backup
+COPY . /app_backup
+
+# Копируем entrypoint скрипт
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Открываем порт, который будет использоваться приложением
 EXPOSE 3000
+
+# Устанавливаем entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Команда по умолчанию — запуск dev-сервера
 CMD ["npm", "run", "dev"]
