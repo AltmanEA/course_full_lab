@@ -32,15 +32,14 @@
 - `Dockerfile.playwright` — сборка контейнера с Playwright
 - `docker-compose.yml` — конфигурация сервисов, сетей и томов
 - `.devcontainer/devcontainer.json` — конфигурация Dev Container для VSCode
-- `scripts/save-images.ps1` и `scripts/load-images.ps1` — PowerShell скрипты для переноса образов между компьютерами
 
 ## Настройка
 
 ### Контейнер lab_next
-- Основан на `node:20-alpine`
-- Установлены Git и Docker CLI (для выполнения `docker exec` изнутри контейнера)
+- Основан на `node:20` (Debian)
+- Установлены Git и Docker CLI версии 28.0.0 (для выполнения `docker exec` изнутри контейнера)
 - Весь исходный код монтируется в `/app` (режим разработки)
-- Зависимости устанавливаются через `npm ci`
+- Зависимости устанавливаются через `npm install`
 - Запускается командой `npx next dev` (сервер на порту 3000)
 - Для корректной работы Hot Module Replacement в Docker окружении настроены переменные среды:
   - `CHOKIDAR_USEPOLLING=true`, `CHOKIDAR_INTERVAL=1000`
@@ -50,8 +49,8 @@
 
 ### Контейнер playwright
 - Основан на `mcr.microsoft.com/playwright:v1.58.2-jammy`
-- Установлены только `@playwright/test` и `playwright` (без лишних зависимостей)
-- Исходный код монтируется в `/app` (только для чтения)
+- Установлены `@playwright/test@1.58.2` и `playwright@1.58.2`
+- Исходный код монтируется в `/app`
 - По умолчанию контейнер держится активным (`tail -f /dev/null`), чтобы можно было выполнять команды
 
 ### Сеть
@@ -61,7 +60,7 @@
 
 ## Запуск тестов
 
-### Прямой вызов через docker exec
+#### Прямой вызов через docker exec
 ```bash
 docker exec course_full_lab_playwright_1 npx playwright test [путь_к_тесту] [опции]
 ```
@@ -72,6 +71,68 @@ docker exec course_full_lab_playwright_1 npx playwright test src/app/nextjs/next
 docker exec course_full_lab_playwright_1 npx playwright test --grep "nextjs01"
 docker exec course_full_lab_playwright_1 npx playwright test --ui
 docker exec course_full_lab_playwright_1 npx playwright test --headed
+```
+
+### Обновление контейнеров при изменении исходных кодов
+
+#### Обновление только контейнера lab_next (при изменениях в исходном коде)
+
+При изменении файлов проекта (например, `page.tsx`, `README.md`, тестов) контейнер `lab_next` автоматически подхватывает изменения благодаря монтированию тома `app_source`. Однако для применения изменений в зависимостях или Docker-конфигурации требуется пересборка.
+
+**Если изменился только исходный код (файлы в `src/`, `public/` и т.д.):**
+- Контейнер `lab_next` автоматически отслеживает изменения благодаря polling-настройкам
+- Пересборка не требуется — изменения применяются сразу
+
+**Если изменились `package.json`, `Dockerfile.lab_next` или другие файлы сборки:**
+```bash
+# Остановить только контейнер lab_next
+docker-compose stop lab_next
+
+# Пересобрать образ lab_next без пересборки playwright
+docker-compose build --no-cache lab_next
+
+# Запустить контейнер заново
+docker-compose start lab_next
+```
+
+Или проще — перезапустить один сервис:
+```bash
+docker-compose up -d --build lab_next
+```
+
+#### Обновление только контейнера playwright (при изменениях в тестах)
+
+Если изменились только файлы тестов (`*.spec.ts`), контейнер `playwright` автоматически подхватит их через монтированный том. Пересборка не требуется.
+
+**Если изменился `Dockerfile.playwright` или зависимости Playwright:**
+```bash
+# Пересобрать только контейнер playwright
+docker-compose build playwright
+
+# Перезапустить контейнер
+docker-compose up -d playwright
+```
+
+#### Обновление обоих контейнеров
+
+```bash
+# Пересобрать оба контейнера
+docker-compose build
+
+# Запустить все сервисы
+docker-compose up -d
+```
+
+#### Проверка актуальности контейнеров
+
+Проверьте версии образов:
+```bash
+docker-compose images
+```
+
+Убедитесь, что контейнеры используют последние изменения:
+```bash
+docker-compose ps
 ```
 
 ### Конфигурация Playwright
@@ -94,11 +155,7 @@ docker exec course_full_lab_playwright_1 npx playwright test --headed
 Для экономии времени на повторную сборку образов можно сохранить их в архив и загрузить на другом компьютере.
 
 ### Сохранение образов
-Выполните PowerShell скрипт (на Windows):
-```powershell
-.\scripts\save-images.ps1
-```
-Или вручную:
+
 ```bash
 docker save -o lab_next.tar course_full_lab_lab_next
 docker save -o playwright.tar course_full_lab_playwright
@@ -106,56 +163,12 @@ docker save -o postgres.tar postgres:18-alpine
 ```
 
 ### Загрузка образов
-```powershell
-.\scripts\load-images.ps1
-```
-Или вручную:
+
 ```bash
 docker load -i lab_next.tar
 docker load -i playwright.tar
 docker load -i postgres.tar
 ```
-
-## Устранение неполадок
-
-### Ошибка «Cannot find package 'vitest'»
-Playwright пытается запустить unit-тесты, которые используют Vitest. Игнорируйте эти ошибки или запускайте тесты с фильтром по конкретному пути.
-
-### Ошибка «ERR_CONNECTION_REFUSED» при запуске тестов
-Тесты используют `http://localhost:3000`, но внутри контейнера playwright localhost не указывает на lab_next. Пока эта проблема не решена (пользователь перепишет тесты в другой сессии). Временное решение — использовать `extra_hosts` (нестабильно) или изменить тесты на относительные пути.
-
-### Ошибка «invalid IP address in add-host»
-Возникает при некорректном формате `extra_hosts`. Убедитесь, что в `docker-compose.yml` нет ошибочных записей.
-
-### Ошибка «client version 1.52 is too new. Maximum supported API version is 1.41»
-Возникает при несовместимости версии Docker CLI внутри контейнера `lab_next` с Docker демоном на хосте. Решение:
-- В `Dockerfile.lab_next` установлена фиксированная версия Docker CLI 28.0.0, совместимая с Docker Engine 28.4.0.
-- Убедитесь, что образ пересобран (`docker-compose build lab_next`).
-- Если ошибка сохраняется, проверьте версию Docker Engine на хосте и при необходимости обновите её.
-
-### Контейнеры не запускаются из-за конфликта портов
-Убедитесь, что порты 3000 и 5432 свободны. Измените маппинг портов в `docker-compose.yml` при необходимости.
-
-### Проблема: Dev server не обновляет страницу после изменения файлов
-При работе в Docker на Windows (или при использовании монтированных томов) Next.js dev server может не обнаруживать изменения файлов, из-за чего Playwright тесты получают устаревшее содержимое страницы.
-
-**Решение:**
-В конфигурацию сервиса `lab_next` добавлены переменные окружения, включающие polling для отслеживания изменений файлов:
-- `CHOKIDAR_USEPOLLING=true`
-- `CHOKIDAR_INTERVAL=1000`
-- `WATCHPACK_POLLING=true`
-- `NEXT_WEBPACK_USEPOLLING=1`
-- `TURBO=0` (отключает Turbo режим, который может конфликтовать с polling)
-
-Также команда запуска изменена на `npx next dev` (без `--turbo`), чтобы гарантировать работу HMR.
-
-После внесения этих изменений перезапустите контейнеры:
-```bash
-docker-compose down
-docker-compose up -d
-```
-
-Проверьте, что при изменении файла `page.tsx` и последующем обращении к странице изменения отображаются.
 
 ## Остановка и очистка
 

@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Next.js 28: ARIA атрибуты для доступности форм', () => {
   test('должен иметь aria-describedby с валидным id на поле формы', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs28');
+    await page.goto('/nextjs/nextjs28');
     await page.waitForLoadState('networkidle');
     
     // Проверяем наличие input с атрибутом aria-describedby
@@ -14,7 +14,7 @@ test.describe('Next.js 28: ARIA атрибуты для доступности �
   });
 
   test('должен иметь aria-live="polite" на контейнере ошибок', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs28');
+    await page.goto('/nextjs/nextjs28');
     await page.waitForLoadState('networkidle');
     
     // Вызываем ошибку валидации
@@ -26,7 +26,7 @@ test.describe('Next.js 28: ARIA атрибуты для доступности �
   });
 
   test('должен иметь id="email-error" на контейнере ошибки', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs28');
+    await page.goto('/nextjs/nextjs28');
     await page.waitForLoadState('networkidle');
     
     // Вызываем ошибку валидации
@@ -38,7 +38,7 @@ test.describe('Next.js 28: ARIA атрибуты для доступности �
   });
 
   test('должен отображать ошибку валидации и связывать её с полем', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs28');
+    await page.goto('/nextjs/nextjs28');
     await page.waitForLoadState('networkidle');
     
     // Отправляем форму без заполнения поля email
@@ -64,7 +64,7 @@ test.describe('Next.js 28: ARIA атрибуты для доступности �
       }
     });
     
-    await page.goto('http://localhost:3000/nextjs/nextjs28');
+    await page.goto('/nextjs/nextjs28');
     await page.waitForLoadState('networkidle');
     
     // Фильтруем критические ошибки

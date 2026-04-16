@@ -5,7 +5,7 @@ test.describe("nextjs16 - Streaming с Suspense", () => {
     page,
   }) => {
     // Переходим на страницу сразу после commit - до полной загрузки
-    await page.goto("http://localhost:3000/nextjs/nextjs16", {
+    await page.goto("/nextjs/nextjs16", {
       waitUntil: "commit",
     });
 
@@ -26,7 +26,7 @@ test.describe("nextjs16 - Streaming с Suspense", () => {
   });
 
   test("Header отображается статично без загрузки", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs16", {
+    await page.goto("/nextjs/nextjs16", {
       waitUntil: "commit",
     });
 
@@ -38,7 +38,7 @@ test.describe("nextjs16 - Streaming с Suspense", () => {
   });
 
   test("Stats отображается без задержки", async ({ page }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs16", {
+    await page.goto("/nextjs/nextjs16", {
       waitUntil: "commit",
     });
 
@@ -51,7 +51,7 @@ test.describe("nextjs16 - Streaming с Suspense", () => {
 
   test("Header и Stats появляются раньше RevenueChart", async ({ page }) => {
     // Переходим на страницу сразу после commit
-    await page.goto("http://localhost:3000/nextjs/nextjs16", {
+    await page.goto("/nextjs/nextjs16", {
       waitUntil: "commit",
     });
 
@@ -72,7 +72,7 @@ test.describe("nextjs16 - Streaming с Suspense", () => {
   test("RevenueChart отображает корректные данные после загрузки", async ({
     page,
   }) => {
-    await page.goto("http://localhost:3000/nextjs/nextjs16", {
+    await page.goto("/nextjs/nextjs16", {
       waitUntil: "commit",
     });
 
