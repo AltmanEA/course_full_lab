@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Next.js 17: Базовый поиск с debounce', () => {
   test('should display all products initially', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     // Проверяем, что отображаются все 10 товаров
@@ -16,7 +16,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
   });
 
   test('should filter products when typing in search input', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     const input = page.locator('input[placeholder*="Поиск"]');
@@ -36,7 +36,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
   });
 
   test('should update URL with query parameter after debounce', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     const input = page.locator('input[placeholder*="Поиск"]');
@@ -54,7 +54,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
   });
 
   test('should show empty state when no products match', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     const input = page.locator('input[placeholder*="Поиск"]');
@@ -81,7 +81,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
       }
     });
 
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     const input = page.locator('input[placeholder*="Поиск"]');
@@ -108,7 +108,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
 
   test('should work with query in URL on page load', async ({ page }) => {
     // Переходим сразу с параметром в URL - ищем "ноут"
-    await page.goto('http://localhost:3000/nextjs/nextjs17?query=ноут');
+    await page.goto('/nextjs/nextjs17?query=ноут');
     await page.waitForLoadState('networkidle');
     
     // Проверяем, что в input есть текст
@@ -122,7 +122,7 @@ test.describe('Next.js 17: Базовый поиск с debounce', () => {
   });
     
   test('should clear filter when input is cleared', async ({ page }) => {
-    await page.goto('http://localhost:3000/nextjs/nextjs17');
+    await page.goto('/nextjs/nextjs17');
     await page.waitForLoadState('networkidle');
     
     const input = page.locator('input[placeholder*="Поиск"]');
