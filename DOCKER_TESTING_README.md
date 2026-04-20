@@ -37,16 +37,17 @@
 ## Настройка
 
 ### Контейнер lab_next
-- Основан на `node:20-alpine`
-- Установлены Git и Docker CLI (для выполнения `docker exec` изнутри контейнера)
-- Весь исходный код монтируется в `/app` (режим разработки)
-- Зависимости устанавливаются через `npm ci`
+- Основан на `node:20` (Debian)
+- Установлены Git, wget, tar и Docker CLI (для выполнения `docker exec` изнутри контейнера)
+- Исходный код загружается из репозитория GitHub (https://github.com/AltmanEA/course_full_lab) при первом запуске контейнера в общий том `/app`
+- Зависимости устанавливаются автоматически при первом запуске через `npm install`
 - Запускается командой `npx next dev` (сервер на порту 3000)
 - Для корректной работы Hot Module Replacement в Docker окружении настроены переменные среды:
   - `CHOKIDAR_USEPOLLING=true`, `CHOKIDAR_INTERVAL=1000`
   - `WATCHPACK_POLLING=true`
   - `NEXT_WEBPACK_USEPOLLING=1`
   - `TURBO=0` (отключение Turbo режима)
+- Использует entrypoint-скрипт `docker-entrypoint.sh`, который принудительно очищает папку `/app` (сохраняя `node_modules`), клонирует репозиторий из GitHub и устанавливает зависимости.
 
 ### Контейнер playwright
 - Основан на `mcr.microsoft.com/playwright:v1.58.2-jammy`

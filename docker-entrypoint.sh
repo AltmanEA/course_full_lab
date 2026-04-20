@@ -1,25 +1,42 @@
 #!/bin/sh
 set -e
 
-# Если отсутствует исходный код (src/app), копируем содержимое из /app_backup
-if [ ! -d "/app/src/app" ]; then
-    echo "Source code not found in /app, copying from /app_backup..."
-    cp -r /app_backup/. /app/
-    echo "Content copied."
+INIT_MARKER="/app/.initialized"
+FORCE_INIT="${FORCE_INIT:-0}"
+
+# Если маркер существует и не принудительная инициализация, пропускаем
+if [ -f "$INIT_MARKER" ] && [ "$FORCE_INIT" != "1" ]; then
+    echo "Container already initialized. Skipping initialization."
+    echo "To force re-initialization, set environment variable FORCE_INIT=1"
+    echo "Executing command: $@"
+    exec "$@"
 fi
 
-# Инициализируем git репозиторий в /app, если его ещё нет
-if [ ! -d "/app/.git" ]; then
-    echo "Initializing git repository in /app..."
-    cd /app && git init
-    # Настраиваем глобальную конфигурацию git для возможности коммита
-    git config --global user.email "container@example.com"
-    git config --global user.name "Container User"
-    # Добавляем все файлы и делаем первый коммит
-    git add .
-    git commit -m "Initial commit from container"
-    echo "Git repository initialized and first commit created."
-fi
+echo "Cleaning /app directory (preserving node_modules)..."
+cd /app
+# Удаляем всё, кроме node_modules (включая скрытые файлы)
+find . -maxdepth 1 ! -name '.' ! -name '..' ! -name 'node_modules' -exec rm -rf {} + 2>/dev/null || true
+
+echo "Cloning repository from GitHub..."
+# Клонируем во временную директорию
+git clone https://github.com/AltmanEA/course_full_lab /tmp/repo
+# Перемещаем содержимое временной директории в /app
+cd /tmp/repo
+find . -maxdepth 1 ! -name '.' ! -name '..' -exec cp -r {} /app \;
+cd /app
+rm -rf /tmp/repo
+
+echo "Installing dependencies..."
+npm install
+
+echo "Installing vitest globally..."
+npm install -g vitest
+
+# Создаём маркер, что инициализация выполнена
+touch "$INIT_MARKER"
+echo "Initialization completed. Marker created at $INIT_MARKER"
+
+echo "Entrypoint finished, executing command: $@"
 
 # Выполняем оригинальную команду
 exec "$@"
